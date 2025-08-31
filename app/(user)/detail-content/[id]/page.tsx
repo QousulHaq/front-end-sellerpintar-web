@@ -15,7 +15,7 @@ const page = async ({
     const { id } = await params
     return (
         <div className='detail-content-container'>
-            <section className="featured-product py-10 px-40 space-y-10">
+            <section className="featured-product py-10 px-40 flex flex-col justify-center items-center gap-10">
                 <div className="detail-featured-product flex flex-col gap-4 justify-center items-center">
                     <div className="date-and-author space-x-2.5">
                         <span className='text-slate-600 text-sm font-medium leading-5'>February 4, 2025</span>
