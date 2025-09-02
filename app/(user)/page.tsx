@@ -1,99 +1,159 @@
-import Card from '@/components/card';
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectValue,
-  SelectGroup,
-  SelectLabel,
-  SelectItem
-} from '@/components/ui/select'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Input } from '@/components/ui/input'
+"use client"
+import React, { useEffect, useState } from 'react';
 
-import { Search } from 'lucide-react';
+import Link from 'next/link';
+
+import axios from 'axios';
+import AxiosInstance from '@/lib/axios';
+
+import { useSession } from 'next-auth/react';
+
+import Card from '@/components/card';
+import HeroSection from '@/components/hero-section';
+import PaginationComponent from '@/components/pagination';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import type { Articles, Category, GetArticlesResponses } from '@/types/data';
+type PageCountTypes = {
+  limit: number;
+  total: number;
+  page: number;
+}
+type ArticleFilterTypes = {
+  title: string,
+  category: string,
+  page: number
+}
 
 export default function Home() {
+  const [articles, setArticles] = useState<Articles[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [pageCount, SetPageCount] = useState<PageCountTypes>({ limit: 1, total: 1, page: 1 })
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentPage = parseInt(searchParams.get('page') || '1');
+  const currentTitleFilter = searchParams.get('title') || '';
+  const currentCategory = searchParams.get('category') || 'none';
+
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setLoading(true)
+      try {
+        const resArticles = await AxiosInstance.get("/articles", {
+          headers: {
+            Authorization: `Bearer ${session?.user.accessToken}`,
+          },
+          params: {
+            ...(currentTitleFilter !== '' && { title: currentTitleFilter }),
+            ...(currentCategory !== 'none' && { category: currentCategory }),
+            page: currentPage,
+            limit: 9
+          }
+        })
+        setArticles(resArticles.data.data)
+        SetPageCount({ total: resArticles.data.total, limit: resArticles.data.limit, page: resArticles.data.page })
+        setLoading(false)
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setErrorMessage(error.response?.data?.message || error.message)
+          setLoading(false)
+          return
+        }
+        console.error(error)
+        setLoading(false)
+      }
+    }
+
+    if (session?.user.accessToken) {
+      fetchArticles();
+    }
+  }, [session?.user.accessToken, currentTitleFilter, currentCategory, currentPage]);
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true)
+      try {
+        const resCategories = await AxiosInstance.get("/categories", {
+          headers: {
+            Authorization: `Bearer ${session?.user.accessToken}`,
+          },
+          params: {
+            page: 1,
+            limit: 25
+          }
+        })
+        setCategories(resCategories.data.data)
+        setLoading(false)
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setErrorMessage(error.response?.data?.message || error.message)
+          setLoading(false)
+          return
+        }
+        console.error(error)
+        setLoading(false)
+      }
+    }
+    fetchCategories();
+  }, [])
+
   return (
     <div className="main-content">
-      <section className="hero-section relative bg-[url('/hero-image.jpg')] bg-cover bg-center h-[500px] flex flex-col justify-center items-center text-center">
-        <div className="absolute inset-0 bg-[rgba(37,99,235,0.86)]"></div>
-        <div className="hero-containers z-10 space-y-10">
-          <div className="hero-content space-y-3">
-            <p className="text-white text-base font-bold leading-6">Blog genzet</p>
-            <h1 className="text-white text-5xl leading-12 font-medium max-w-[730px]">The Journal : Design Resources, Interviews, and Industry News</h1>
-            <h2 className="text-white text-2xl leading-8 font-normal">Your daily dose of design insights!</h2>
-          </div>
-          <div className="hero-filter-container bg-blue-500 rounded-2xl p-4 flex gap-2">
-            <Select>
-              <SelectTrigger className='bg-white w-[180px] rounded-[6px]'>
-                <SelectValue placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Role</SelectLabel>
-                  <SelectItem value="user">User</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <div className="input-icon-wrapper relative w-full">
-              <Input
-                id="search"
-                type={"text"}
-                placeholder="Search articles"
-                required
-                className='bg-white placeholder:text-slate-400 rounded-[6px] pl-8'
-              >
-              </Input>
-              <Search className='size-4 text-slate-400 absolute left-2 top-1/2 -translate-y-1/2' />
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        onFilter={({ searchString, category }) => {
+          const params = new URLSearchParams(searchParams.toString());
+
+          params.set('title', searchString);
+          params.set('category', category);
+          params.set('page', '1');
+
+          router.push(`/?${params.toString()}`);
+        }}
+        loading={loading}
+        categories={categories}
+      />
       <section className="card-section pt-10 px-[100px] pb-[100px]">
         <div className="card-section-content space-y-6">
-          <p className="cards-detail-info text-slate-600 text-base font-medium leading-6">Showing : 20 of 240 articles</p>
-          <div className="cards-container grid grid-cols-3 gap-x-10 gap-y-[60px] mb-[60px]">
+          <p className="cards-detail-info text-slate-600 text-base font-medium leading-6">Showing : {articles.length > 9 ? pageCount.limit : articles.length} of {pageCount.total} articles</p>
+          <div className="cards-container grid grid-cols-3 gap-x-10 gap-y-[60px]">
             {
-              Array.from({ length: 9 }).map((_, index) => (
-                <Card key={`card-${index}`} />
-              ))
+              !loading ? (
+                articles.map((value, index) => (
+                  <Link href={`/detail-content/${value.id}`} key={`card-${index}`}>
+                    <Card title={value.title} content={value.content} category={value.category} createdAt={value.createdAt} imageUrl={value.imageUrl} />
+                  </Link>
+                ))
+              ) : (
+                <p>loading... ntar dikasi skeleton</p>
+              )
             }
+            {errorMessage !== '' && <p className="error-message text-red-500 text-sm">{errorMessage}</p>}
           </div>
-          <div className="pagination-container">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+          {articles.length === 0 && !loading ? (
+            <div className="not-found-info w-full rounded-[12px] border border-slate-200 py-6">
+              <p className='text-slate-900 text-lg font-medium leading-6 text-center'>no article found</p>
+            </div>
+          ) : ""}
+          <div className="pagination-container mt-[60px]">
+            <PaginationComponent
+              limit={pageCount.limit}
+              total={pageCount.total}
+              onPageChange={(page) => {
+                const params = new URLSearchParams(searchParams.toString());
+
+                params.set('page', page.toString());
+
+                router.push(`/?${params.toString()}`);
+              }}
+            />
           </div>
         </div>
       </section>

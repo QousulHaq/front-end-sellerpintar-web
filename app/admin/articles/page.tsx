@@ -21,6 +21,16 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+    DialogClose
+} from "@/components/ui/dialog"
 import { Input } from '@/components/ui/input'
 
 import { Search, Plus } from 'lucide-react';
@@ -102,7 +112,27 @@ const page = () => {
                                 <div className="content-cell py-3 px-4 border-b border-slate-200 bg-white flex justify-center items-center space-x-3">
                                     <Link href={"#"} className='text-blue-600 text-sm font-normal leading-5 underline'>Preview</Link>
                                     <Link href={"#"} className='text-blue-600 text-sm font-normal leading-5 underline'>Edit</Link>
-                                    <Link href={"#"} className='text-red-500 text-sm font-normal leading-5 underline'>Delete</Link>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <p className='text-red-500 text-sm font-normal leading-5 underline cursor-pointer'>Delete</p>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
+                                            <form>
+                                                <DialogHeader>
+                                                    <DialogTitle>Delete Articles</DialogTitle>
+                                                    <DialogDescription>
+                                                        Deleting this article is permanent and cannot be undone. All related content will be removed.
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <DialogFooter>
+                                                    <DialogClose asChild>
+                                                        <Button variant="outline" className='py-2 px-4 rounded-[6px]'>Cancel</Button>
+                                                    </DialogClose>
+                                                    <Button type="submit" className='py-2 px-4 rounded-[6px] bg-red-600'>Delete</Button>
+                                                </DialogFooter>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
                                 </div>
                             </div>
                         ))
