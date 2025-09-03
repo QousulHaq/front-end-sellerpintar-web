@@ -36,7 +36,7 @@ const Page = () => {
 
     const router = useRouter()
     const dialogTrigger = useRef<HTMLButtonElement>(null)
-    const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const {
         register,
         control,
@@ -57,7 +57,9 @@ const Page = () => {
         if (res.error) {
             setError("root", { message: res.error })
         } else {
-            dialogTrigger.current && dialogTrigger.current.click();
+            if (dialogTrigger.current) {
+                dialogTrigger.current.click();
+            }
         }
     }
 

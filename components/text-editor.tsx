@@ -347,7 +347,7 @@ const TextEditor = ({ onEditorChange, htmlString }: { onEditorChange: (textValue
                     <Italic className={`size-4 cursor-pointer hover:text-blue-500 text-slate-600`} onClick={(e) => italicHandler(e)} />
                 </div>
                 <Separator className='border border-slate-200 py-2' orientation='vertical' />
-                <ImageIcon className={`size-4 cursor-pointer hover:text-blue-500 text-slate-600`} onClick={(e) => { pictureInputRef.current && pictureInputRef.current.click(); }} />
+                <ImageIcon className={`size-4 cursor-pointer hover:text-blue-500 text-slate-600`} onClick={() => { pictureInputRef.current && pictureInputRef.current.click(); }} />
                 <Separator className='border border-slate-200 py-2' orientation='vertical' />
                 <div className="tools-group flex items-center gap-1">
                     <AlignLeft className={`size-4 cursor-pointer hover:text-blue-500 text-slate-600`} onClick={(e) => leftAlignHandler(e)} />

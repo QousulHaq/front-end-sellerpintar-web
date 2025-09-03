@@ -9,7 +9,7 @@ import {
     PaginationNext
 } from '@/components/ui/pagination'; // ganti dengan path kamu
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function PaginationComponent({ total, limit, amountPages, baseUrl = "/" }: { total?: number, limit?: number, amountPages?: number; baseUrl?: string }) {
     const searchParams = useSearchParams();

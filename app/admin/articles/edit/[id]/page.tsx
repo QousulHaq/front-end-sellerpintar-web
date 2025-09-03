@@ -45,7 +45,6 @@ const Page = () => {
         control,
         handleSubmit,
         setError,
-        setValue,
         getValues,
         reset,
         formState: { errors, isSubmitting },
@@ -121,7 +120,7 @@ const Page = () => {
         try {
             console.log("datayangdisubmit", data)
             // Uncomment untuk API call update
-            const res = await AxiosInstance.put(`/articles/${articleId}`, data, {
+            await AxiosInstance.put(`/articles/${articleId}`, data, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${session?.user.accessToken}`,

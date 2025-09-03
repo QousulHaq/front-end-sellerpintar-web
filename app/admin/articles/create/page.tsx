@@ -57,15 +57,15 @@ const Page = () => {
                     }
                 })
                 setCategories(resCategories.data.data)
-                setLoading((prev) => (false));
+                setLoading(false);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     setErrorMessage(error.response?.data?.message || error.message)
-                    setLoading((prev) => (false));
+                    setLoading(false);
                     return
                 }
                 console.error(error)
-                setLoading((prev) => (false));
+                setLoading(false);
             }
         }
         fetchCategories();

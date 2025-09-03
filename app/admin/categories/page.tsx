@@ -97,7 +97,7 @@ const Page = () => {
     const postCategory: SubmitHandler<CreateCategoryTypes> = async (data) => {
         try {
             const { category } = data
-            const res = await AxiosInstance.post(`/categories`, { name: category }, {
+            await AxiosInstance.post(`/categories`, { name: category }, {
                 headers: {
                     Authorization: `Bearer ${session?.user.accessToken}`,
                 },
@@ -115,7 +115,7 @@ const Page = () => {
     const editCategory: SubmitHandler<CreateCategoryTypes> = async (data) => {
         try {
             const { category, id } = data
-            const res = await AxiosInstance.put(`/categories/${id}`, { name: category }, {
+            await AxiosInstance.put(`/categories/${id}`, { name: category }, {
                 headers: {
                     Authorization: `Bearer ${session?.user.accessToken}`,
                 },
