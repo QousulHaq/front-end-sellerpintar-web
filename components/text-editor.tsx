@@ -4,12 +4,87 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { createEditor, Editor, Transforms, Element, Node } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { Separator } from './ui/separator'
+import type { RenderElementProps, RenderLeafProps } from 'slate-react'
+import { slateToHtml, slateToHtmlConfig, type SlateToHtmlConfig, htmlToSlate } from '@slate-serializers/html';
+import { Element as DomHandlerElement } from 'domhandler';
+import { Config } from '@/types/slate'
+import { styleToString } from '@/lib/slate'
+import { useDebounce } from 'use-debounce'
 
+// import { htmlToSlate, cleanEmptyParagraphs } from '@/lib/html-to-slate';
+
+import { Separator } from './ui/separator'
 import { Image as ImageIcon, Redo2, Undo2, Bold, Italic, AlignCenter, AlignJustify, AlignLeft, AlignRight, List, ListOrdered } from "lucide-react"
 
-import type { RenderElementProps, RenderLeafProps } from 'slate-react'
 import type { CustomElementType, CustomEditorType } from '@/types'
+
+
+// Map Slate element names to HTML tag names
+const ELEMENT_NAME_TAG_MAP = {
+    paragraph: 'p',
+    'bulleted-list': 'ul',
+    'numbered-list': 'ol',
+    'list-item': 'li',
+}
+
+const MARK_ELEMENT_TAG_MAP = {
+    bold: ['span'],
+    italic: ['em'],
+    underline: ['u'],
+    strikethrough: ['s'],
+    code: ['code'],
+}
+
+export const config: Config = {
+    markMap: MARK_ELEMENT_TAG_MAP,
+    elementMap: ELEMENT_NAME_TAG_MAP,
+
+    elementAttributeTransform: ({ node }) => {
+        if (node.align) {
+            return {
+                style: styleToString({
+                    ['text-align']: node.align,
+                }),
+                class: 'text-slate-700 text-base font-normal max-w-[1120px] mb-4',
+            }
+        }
+        return {
+            class: 'text-slate-700 text-base font-normal max-w-[1120px] mb-4',
+        }
+    },
+
+    elementTransforms: {
+        'bulleted-list': ({ children = [] }) => {
+            return new DomHandlerElement('ul', { class: 'list-disc mb-4' }, children)
+        },
+        'numbered-list': ({ children = [] }) => {
+            return new DomHandlerElement('ol', { class: 'list-decimal mb-4' }, children)
+        },
+        'list-item': ({ children = [] }) => {
+            return new DomHandlerElement('li', { class: 'ml-4' }, children)
+        },
+    },
+
+    markTransforms: {
+        bold: ({ children = [] }) =>
+            new DomHandlerElement('span', { class: 'text-slate-900 text-base font-semibold mb-0' }, children),
+
+        italic: ({ children = [] }) =>
+            new DomHandlerElement('em', { class: 'italic text-slate-700 text-base font-normal' }, children),
+
+        code: ({ children = [] }) =>
+            new DomHandlerElement(
+                'code',
+                { class: 'bg-gray-100 px-1 py-0.5 rounded text-sm font-mono' },
+                children
+            ),
+    },
+
+    encodeEntities: false,
+    alwaysEncodeBreakingEntities: true,
+    alwaysEncodeCodeEntities: false,
+    convertLineBreakToBr: false,
+}
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
@@ -114,9 +189,14 @@ const initialValue: CustomElementType[] = [
     },
 ]
 
-const TextEditor = () => {
+const TextEditor = ({ onEditorChange, htmlString }: { onEditorChange: (textValue: string) => void, htmlString?: string }) => {
     const [charCount, setCharCount] = useState(0)
     const [editor] = useState(() => withHistory(withImages(withReact(createEditor()))))
+
+    const [textObject, setTextObject] = useState(initialValue);
+    const [textValue, setTextValue] = useState<string>("");
+    const [textDebounced] = useDebounce(textValue, 1000);
+
     const pictureInputRef = useRef<HTMLInputElement>(null);
 
     const getCharacterCount = useCallback((value: CustomElementType[]) => {
@@ -125,8 +205,13 @@ const TextEditor = () => {
     }, [])
 
     const handleEditorChange = useCallback((value: CustomElementType[]) => {
+        setTextValue(slateToHtml(value, config))
         setCharCount(getCharacterCount(value))
     }, [getCharacterCount])
+
+    useEffect(() => {
+        onEditorChange(textDebounced);
+    }, [textDebounced])
 
     useEffect(() => {
         setCharCount(getCharacterCount(initialValue))
@@ -286,7 +371,7 @@ const TextEditor = () => {
                     onChange={pictureInputHandler}
                     ref={pictureInputRef}
                 />
-                <Slate editor={editor} initialValue={initialValue} onChange={handleEditorChange}>
+                <Slate editor={editor} initialValue={htmlString === '' ? initialValue : htmlToSlate(`${htmlString}`)} onChange={handleEditorChange}>
                     <Editable
                         className='h-[437px] max-h-[437px] overflow-y-scroll p-4 border border-gray-300 rounded'
                         renderElement={renderElement}
@@ -421,7 +506,7 @@ const ImageElement = ({ attributes, children, element }: RenderElementProps) => 
     return (
         <div {...attributes}>
             <div contentEditable={false}>
-                <img src={el.url} alt="" className="max-w-xs my-2" style={style}/>
+                <img src={el.url} alt="" className="max-w-xs my-2" style={style} />
             </div>
             {children}
         </div>

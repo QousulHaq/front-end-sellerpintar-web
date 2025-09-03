@@ -7,6 +7,7 @@ import { Badge } from './ui/badge'
 import type { Articles } from '@/types/data'
 
 import { dateFormatter } from '@/lib/utils'
+import { truncateHtmlToText } from '@/lib/utils'
 
 const Card = ({
     title,
@@ -21,7 +22,7 @@ const Card = ({
             <div className="card-content space-y-2 max-w-[386.67px]">
                 <p className='text-slate-600 text-sm font-normal leading-5'>{dateFormatter(createdAt)}</p>
                 <h1 className='text-slate-900 text-lg font-semibold leading-7'>{title}</h1>
-                <h3 className='text-slate-600 text-base font-normal leading-6'>{content}</h3>
+                <h3 className='text-slate-600 text-base font-normal leading-6'>{truncateHtmlToText(content, 50)}</h3>
                 <div className="card-badge-container space-x-2">
                     <Badge className='bg-blue-200 text-blue-900 rounded-full '>{category.name}</Badge>
                 </div>

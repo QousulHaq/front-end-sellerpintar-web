@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import axios from 'axios';
 import AxiosInstance from '@/lib/axios';
@@ -12,18 +13,11 @@ import Card from '@/components/card';
 import HeroSection from '@/components/hero-section';
 import PaginationComponent from '@/components/pagination';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-
-import type { Articles, Category, GetArticlesResponses } from '@/types/data';
+import type { Articles, Category } from '@/types/data';
 type PageCountTypes = {
   limit: number;
   total: number;
   page: number;
-}
-type ArticleFilterTypes = {
-  title: string,
-  category: string,
-  page: number
 }
 
 export default function Home() {
@@ -132,7 +126,9 @@ export default function Home() {
                   </Link>
                 ))
               ) : (
-                <p>loading... ntar dikasi skeleton</p>
+                <div className="not-found-info w-full rounded-[12px] border border-slate-200 py-6">
+                  <p className="text-slate-900 text-lg font-medium leading-6 text-center">Loading...</p>
+                </div>
               )
             }
             {errorMessage !== '' && <p className="error-message text-red-500 text-sm">{errorMessage}</p>}
@@ -146,13 +142,6 @@ export default function Home() {
             <PaginationComponent
               limit={pageCount.limit}
               total={pageCount.total}
-              onPageChange={(page) => {
-                const params = new URLSearchParams(searchParams.toString());
-
-                params.set('page', page.toString());
-
-                router.push(`/?${params.toString()}`);
-              }}
             />
           </div>
         </div>

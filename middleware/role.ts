@@ -16,6 +16,10 @@ export default async function roleMiddleware(req: NextRequest) {
         }
     }
 
+    if (pathname.includes("/detail-content") || pathname.includes("/preview")) {
+        return NextResponse.next();
+    }
+
     // Role-based restrictions
     if (pathname.startsWith("/admin") && token.role !== "Admin") {
         return NextResponse.redirect(new URL("/", req.url));

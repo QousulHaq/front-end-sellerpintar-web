@@ -13,22 +13,24 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function PaginationComponent({ total, limit, onPageChange }: { total: number, limit: number, onPageChange: (page: number) => void }) {
+export default function PaginationComponent({ total, limit, amountPages, baseUrl = "/" }: { total?: number, limit?: number, amountPages?: number; baseUrl?: string }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const currentPage = parseInt(searchParams.get('page') || '1');
-    const totalPages = Math.ceil(total / limit);
+    let totalPages
+    if (total && limit) {
+        totalPages = Math.ceil(total / limit);
+    }
+    if (amountPages) {
+        totalPages = amountPages;
+    }
 
     const createPageLink = (page: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('page', page.toString());
-        return `/?${params.toString()}`;
+        return `${baseUrl}?${params.toString()}`;
     };
-
-    useEffect(() => {
-        onPageChange(currentPage)
-    }, [currentPage])
 
     return (
         <Pagination>
@@ -36,11 +38,7 @@ export default function PaginationComponent({ total, limit, onPageChange }: { to
                 {/* Previous Button */}
                 <PaginationItem>
                     <PaginationPrevious
-                        onClick={() => {
-                            if (currentPage > 1) {
-                                router.push(createPageLink(currentPage - 1));
-                            }
-                        }}
+                        href={createPageLink(currentPage - 1)}
                         aria-disabled={currentPage === 1}
                         className='aria-disabled:cursor-not-allowed cursor-pointer'
                     />
@@ -51,11 +49,9 @@ export default function PaginationComponent({ total, limit, onPageChange }: { to
                     const page = index + 1;
                     return (
                         <PaginationItem key={`page-${page}`}>
-                            <Link href={createPageLink(page)} scroll={false}>
-                                <PaginationLink isActive={page === currentPage}>
-                                    {page}
-                                </PaginationLink>
-                            </Link>
+                            <PaginationLink isActive={page === currentPage} href={createPageLink(page)}>
+                                {page}
+                            </PaginationLink>
                         </PaginationItem>
                     );
                 })}
@@ -63,11 +59,7 @@ export default function PaginationComponent({ total, limit, onPageChange }: { to
                 {/* Next Button */}
                 <PaginationItem>
                     <PaginationNext
-                        onClick={() => {
-                            if (currentPage < totalPages) {
-                                router.push(createPageLink(currentPage + 1));
-                            }
-                        }}
+                        href={createPageLink(currentPage + 1)}
                         aria-disabled={currentPage === totalPages}
                         className='aria-disabled:cursor-not-allowed cursor-pointer'
                     />

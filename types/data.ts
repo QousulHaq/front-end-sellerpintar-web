@@ -5,7 +5,8 @@ export type Author = {
 
 export type Category = {
     id: string;
-    name: string
+    name: string,
+    createdAt : string
 }
 
 export type Articles = {
