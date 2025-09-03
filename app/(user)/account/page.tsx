@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 
 
-const page = async () => {
+const Page = async () => {
     const session = await getServerSession(authOptions);
     return (
         <div className='account-container'>
@@ -52,4 +52,4 @@ const page = async () => {
     )
 }
 
-export default page
+export default Page

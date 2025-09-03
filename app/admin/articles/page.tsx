@@ -36,7 +36,7 @@ type PageCountTypes = {
     page: number;
 }
 
-const page = () => {
+const Page = () => {
     const [articles, setArticles] = useState<Articles[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState({
@@ -251,4 +251,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

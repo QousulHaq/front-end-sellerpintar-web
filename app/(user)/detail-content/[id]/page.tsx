@@ -12,7 +12,7 @@ import { dateFormatter } from '@/lib/utils'
 import type { GetDetailArticlesResponses } from '@/types/data'
 
 
-const page = async ({
+const Page = async ({
     params,
 }: {
     params: Promise<{ id: string }>
@@ -53,4 +53,4 @@ const page = async ({
     )
 }
 
-export default page
+export default Page

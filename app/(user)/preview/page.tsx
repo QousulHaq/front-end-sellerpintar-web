@@ -12,7 +12,7 @@ import { useArticletContext } from '@/context/ArticleContext'
 import { useSession } from 'next-auth/react'
 
 
-const page = () => {
+const Page = () => {
     const { article } = useArticletContext()
     const { data: session, status } = useSession();
 
@@ -48,4 +48,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

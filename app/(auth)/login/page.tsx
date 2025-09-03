@@ -20,7 +20,7 @@ import Logo from "@/public/sellerpintarweb-logo.svg"
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
     const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(false);
     const {
@@ -104,4 +104,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

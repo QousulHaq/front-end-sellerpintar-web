@@ -30,7 +30,7 @@ import { ArrowLeft } from "lucide-react"
 import { CreateArticlesTypes, createArticlesSchema } from "@/types/form"
 import { Category } from "@/types/data"
 
-const page = () => {
+const Page = () => {
     const { setArticle, article } = useArticletContext()
     const { data: session } = useSession()
     const router = useRouter()
@@ -300,4 +300,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
-const page = async () => {
+const Page = async () => {
     const session = await getServerSession(authOptions);
     return (
         <div className='account-container bg-gray-50'>
@@ -51,4 +51,4 @@ const page = async () => {
     )
 }
 
-export default page
+export default Page

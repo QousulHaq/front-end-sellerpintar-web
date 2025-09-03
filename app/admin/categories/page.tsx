@@ -51,7 +51,7 @@ type PageCountTypes = {
     page: number;
 }
 
-const page = () => {
+const Page = () => {
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -300,4 +300,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

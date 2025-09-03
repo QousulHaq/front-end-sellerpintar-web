@@ -33,7 +33,7 @@ import { EyeOff, Eye } from 'lucide-react'
 
 import Logo from "@/public/sellerpintarweb-logo.svg"
 
-const page = () => {
+const Page = () => {
 
     const router = useRouter()
     const dialogTrigger = useRef<HTMLButtonElement>(null)
@@ -153,4 +153,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
