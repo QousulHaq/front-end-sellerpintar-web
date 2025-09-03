@@ -9,7 +9,7 @@ export default function UserLayout({
     return (
         <>
             <Navbar />
-            <main>
+            <main className="min-h-screen md:min-h-auto">
                 {children}
             </main>
             <Footer />

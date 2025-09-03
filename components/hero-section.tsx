@@ -43,17 +43,17 @@ const HeroSection = ({
     }, [value, category])
 
     return (
-        <section className="hero-section relative bg-[url('/hero-image.jpg')] bg-cover bg-center h-[500px] flex flex-col justify-center items-center text-center">
+        <section className="hero-section relative bg-[url('/hero-image.jpg')] bg-cover bg-center md:h-[500px] h-[560px] flex flex-col justify-center items-center text-center">
             <div className="absolute inset-0 bg-[rgba(37,99,235,0.86)]"></div>
-            <div className="hero-containers z-10 space-y-10">
+            <div className="hero-containers z-10 space-y-10 mt-[117px] md:mt-0 w-[337px] md:w-auto">
                 <div className="hero-content space-y-3">
-                    <p className="text-white text-base font-bold leading-6">Blog genzet</p>
-                    <h1 className="text-white text-5xl leading-12 font-medium max-w-[730px]">The Journal : Design Resources, Interviews, and Industry News</h1>
-                    <h2 className="text-white text-2xl leading-8 font-normal">Your daily dose of design insights!</h2>
+                    <p className="text-white md:text-base text-sm font-bold md:leading-6 leading-5">Blog genzet</p>
+                    <h1 className="text-white md:text-5xl text-4xl md:leading-12 leading-10 font-medium max-w-[730px]">The Journal : <br className='block md:hidden' /> Design Resources, Interviews, and Industry News</h1>
+                    <h2 className="text-white md:text-2xl text-xl md:leading-8 leading-7 font-normal">Your daily dose of design insights!</h2>
                 </div>
-                <div className="hero-filter-container bg-blue-500 rounded-2xl p-4 flex gap-2">
+                <div className="hero-filter-container bg-blue-500 rounded-2xl p-2.5 md:p-4 flex gap-2 flex-col md:flex-row">
                     <Select disabled={loading} onValueChange={(data) => setCategory(data)}>
-                        <SelectTrigger className='bg-white w-[180px] rounded-[6px]'>
+                        <SelectTrigger className='bg-white w-full md:w-[180px] rounded-[6px]'>
                             <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
                         <SelectContent>

@@ -43,19 +43,38 @@ const Navbar = () => {
     const { data: session } = useSession()
 
     return (
-        <nav className={`navbar ${isHomepage ? "absolute top-0 z-20" : "border-b border-slate-200"} py-8 px-[60px] flex justify-between items-center w-full`}>
+        <nav className={`navbar ${isHomepage ? "md:absolute block top-0 z-20" : "border-b border-slate-200"} md:py-8 md:px-[60px] py-4 px-5 flex justify-between items-center w-full bg-white md:bg-transparent`}>
             <Link href={"/"}>
-                <Image src={isHomepage ? LogoWhite : Logo} height={24} width={134} alt='Company Logo' draggable={false} />
+                <Image
+                    src={isHomepage ? LogoWhite : Logo}
+                    height={24}
+                    width={134}
+                    alt='Company Logo'
+                    draggable={false}
+                    className="md:block hidden"
+                />
+                <Image
+                    src={Logo}
+                    height={22}
+                    width={122}
+                    alt='Company Logo'
+                    draggable={false}
+                    className="md:hidden block"
+                />
             </Link>
             <div className="user-account flex gap-1.5">
-                <Avatar className='size-8'>
+                <Avatar className='size-8 md:block hidden'>
                     <AvatarImage src={"/user-image.jpg"} alt='user-image' />
                     <AvatarFallback className='text-blue-900 bg-blue-200'>{(session?.user.username)?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <Menubar className='bg-transparent focus:bg-transparent border-0 p-0 m-0 rounded-none shadow-none'>
                     <MenubarMenu>
                         <MenubarTrigger className='bg-transparent focus:bg-transparent data-[state=open]:bg-transparent border-0 p-0 m-0 rounded-none cursor-pointer'>
-                            <p className={`${isHomepage ? "text-white" : "text-slate-900"} text-base font-medium leading-6 underline`}>{session?.user.username}</p>
+                            <p className={`${isHomepage ? "text-white" : "text-slate-900"} hidden md:block text-base font-medium leading-6 underline`}>{session?.user.username}</p>
+                            <Avatar className='size-8 md:hidden block'>
+                                <AvatarImage src={"/user-image.jpg"} alt='user-image' />
+                                <AvatarFallback className='text-blue-900 bg-blue-200'>{(session?.user.username)?.charAt(0).toUpperCase()}</AvatarFallback>
+                            </Avatar>
                         </MenubarTrigger>
                         <MenubarContent className='border-slate-200' align='end'>
                             <Link href={"/account"}><MenubarItem className='text-slate-600 text-sm font-normal leading-5 cursor-pointer'>My Account</MenubarItem></Link>

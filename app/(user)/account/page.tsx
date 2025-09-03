@@ -13,7 +13,7 @@ const page = async () => {
     const session = await getServerSession(authOptions);
     return (
         <div className='account-container'>
-            <section className="featured-product py-10 px-40 h-[667px] flex justify-center items-center">
+            <section className="featured-product px-5 py-10 md:px-40 h-[667px] flex justify-center items-center">
                 <div className="profile-card-container flex flex-col gap-9 justify-center items-center">
                     <h1 className='text-slate-900 text-xl font-semibold leading-7'>User Profile</h1>
                     <div className="profile-card-content flex flex-col gap-6 justify-center items-center">

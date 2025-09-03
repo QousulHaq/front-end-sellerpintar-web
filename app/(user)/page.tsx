@@ -114,10 +114,10 @@ export default function Home() {
         loading={loading}
         categories={categories}
       />
-      <section className="card-section pt-10 px-[100px] pb-[100px]">
+      <section className="card-section pt-10 px-5 md:px-[100px] pb-[60px] md:pb-[100px] flex justify-center item-center md:block md:justify-start md:items-start">
         <div className="card-section-content space-y-6">
           <p className="cards-detail-info text-slate-600 text-base font-medium leading-6">Showing : {articles.length > 9 ? pageCount.limit : articles.length} of {pageCount.total} articles</p>
-          <div className="cards-container grid grid-cols-3 gap-x-10 gap-y-[60px]">
+          <div className="cards-container grid md:grid-cols-3 grid-cols-1 gap-x-10 md:gap-y-[60px] gap-y-10">
             {
               !loading ? (
                 articles.map((value, index) => (
