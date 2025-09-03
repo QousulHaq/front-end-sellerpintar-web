@@ -14,7 +14,7 @@ import { ImagePlus } from 'lucide-react'
 const ImageUploader = ({ imageUrl, onImageChange, onErrorUpload }: { imageUrl: string, onImageChange: (data: string) => void, onErrorUpload: (data: string) => void }) => {
 
   const imageInputRef = useRef<HTMLInputElement>(null)
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const pictureInputHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -50,7 +50,7 @@ const ImageUploader = ({ imageUrl, onImageChange, onErrorUpload }: { imageUrl: s
         {
           imageUrl !== "" ? (
             <>
-              <Image src={imageUrl === null? "https://placehold.co/60x60/png" : imageUrl} fill className='absolute object-cover' alt='image-input' />
+              <Image src={imageUrl === null ? "https://placehold.co/60x60/png" : imageUrl} fill className='absolute object-cover' alt='image-input' />
             </>
           ) : (
             <>

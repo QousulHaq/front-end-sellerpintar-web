@@ -1,6 +1,5 @@
 "use client"
-import React, { useState, useRef, useEffect } from 'react'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import { useSession } from 'next-auth/react'
@@ -27,7 +26,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import TextEditor from '@/components/text-editor'
 import ImageUploader from '@/components/image-uploader'
 
@@ -38,7 +36,7 @@ import { Category } from '@/types/data'
 
 const Page = () => {
     const { setArticle, article } = useArticletContext()
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const router = useRouter()
 
     const [categories, setCategories] = useState<Category[]>([])

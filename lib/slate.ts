@@ -1,12 +1,12 @@
-const camelize = (str: string) => {
-  return str.replace(/(?:^|[-])(\w)/g, (a, c) => {
+const camelize = (str: string): string => {
+  return str.replace(/(?:^|[-])(\w)/g, (a: string, c: string): string => {
     c = a.substring(0, 1) === '-' ? c.toUpperCase() : c
     return c ? c : ''
   })
 }
 
-export const parseStyleCssText = (value: string): { [key: string]: string } => {
-  const output: { [key: string]: string } = {}
+export const parseStyleCssText = (value: string): Record<string, string> => {
+  const output: Record<string, string> = {}
 
   if (!value) {
     return output
@@ -27,9 +27,8 @@ export const parseStyleCssText = (value: string): { [key: string]: string } => {
   return output
 }
 
-export const encodeBreakingEntities = (str: string) => {
-  const swapChar = (charToSwap: string) => {
-    // that swaps characters to HTML entities
+export const encodeBreakingEntities = (str: string): string => {
+  const swapChar = (charToSwap: string): string => {
     switch (charToSwap) {
       case '&':
         return '&amp;'
@@ -41,18 +40,15 @@ export const encodeBreakingEntities = (str: string) => {
         return charToSwap
     }
   }
-  str = str.replace(/[&<>]/g, (match) => {
-    return swapChar(match)
-  })
 
-  return str
+  return str.replace(/[&<>]/g, (match: string) => swapChar(match))
 }
 
-export const decodeBreakingEntities = (str: string) => {
-  return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+export const decodeBreakingEntities = (str: string): string => {
+  return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
 }
 
-export const styleToString = (style: { [key: string]: string }) => {
+export const styleToString = (style: Record<string, string>): string => {
   return Object.keys(style).reduce(
     (acc, key) =>
       acc +
@@ -67,20 +63,21 @@ export const styleToString = (style: { [key: string]: string }) => {
   )
 }
 
-export const isEmptyObject = (obj: any) =>
-  obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
+export const isEmptyObject = (obj: object): boolean =>
+  obj &&
+  Object.keys(obj).length === 0 &&
+  Object.getPrototypeOf(obj) === Object.prototype
 
 export const styleMapToAttribs = ({
   elementStyleMap,
   node,
 }: {
-  elementStyleMap: { [key: string]: string },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-}): { [key: string]: any } => {
-  let attribs: { [key: string]: string } = {}
-  const styleAttrs: { [key: string]: string } = {}
+  elementStyleMap: Record<string, string>
+  node: Record<string, string | undefined>
+}): Record<string, string> => {
+  let attribs: Record<string, string> = {}
+  const styleAttrs: Record<string, string> = {}
+
   Object.keys(elementStyleMap).forEach((slateKey) => {
     const cssProperty = elementStyleMap[slateKey]
     const cssValue = node[slateKey]
@@ -89,16 +86,21 @@ export const styleMapToAttribs = ({
       styleAttrs[cssProperty] = cssValue
     }
   })
+
   if (!isEmptyObject(styleAttrs)) {
     attribs = {
       ...attribs,
       style: styleToString(styleAttrs),
     }
   }
+
   return isEmptyObject(attribs) ? {} : attribs
 }
 
-export const intersection = (o1: { [key: string]: any }, o2: { [key: string]: any }) => {
+export const intersection = (
+  o1: Record<string, unknown>,
+  o2: Record<string, unknown>,
+): string[] => {
   return Object.keys(o1)
     .concat(Object.keys(o2))
     .sort()

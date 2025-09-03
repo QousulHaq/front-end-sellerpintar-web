@@ -1,5 +1,5 @@
 // TypeScript users only add this code
-import { BaseEditor, BaseElement, BaseText, Descendant } from 'slate'
+import { BaseEditor, BaseElement, BaseText } from 'slate'
 import { ReactEditor } from 'slate-react'
 import { HistoryEditor } from 'slate-history'
 

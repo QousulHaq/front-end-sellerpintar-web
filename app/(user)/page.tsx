@@ -34,7 +34,7 @@ export default function Home() {
   const currentTitleFilter = searchParams.get('title') || '';
   const currentCategory = searchParams.get('category') || 'none';
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchArticles = async () => {

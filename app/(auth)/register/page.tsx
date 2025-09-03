@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -25,7 +25,6 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter,
-    DialogClose
 } from "@/components/ui/dialog"
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select'
 

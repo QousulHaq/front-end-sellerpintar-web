@@ -2,9 +2,6 @@
 import React from 'react'
 
 import Image from 'next/image'
-import Link from 'next/link'
-
-import Card from '@/components/card'
 
 import { dateFormatter } from '@/lib/utils'
 
@@ -14,7 +11,7 @@ import { useSession } from 'next-auth/react'
 
 const Page = () => {
     const { article } = useArticletContext()
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     return (
         <div className='detail-content-container'>
@@ -29,7 +26,7 @@ const Page = () => {
                 </div>
                 <Image src={article.imageUrl || "https://placehold.co/1120x480/png"} width={1120} height={480} alt='detail-content-image' className='rounded-[12px]' />
                 <div className="article-content">
-                    <div className='max-w-[1120px]' dangerouslySetInnerHTML={{__html : article.content}}/>
+                    <div className='max-w-[1120px]' dangerouslySetInnerHTML={{ __html: article.content }} />
                 </div>
             </section>
             {/* <section className="other-content pt-10 px-[180px] pb-[100px] space-y-6">

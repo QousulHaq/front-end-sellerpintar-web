@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import {
     Pagination,
     PaginationContent,
@@ -11,10 +10,8 @@ import {
 } from '@/components/ui/pagination'; // ganti dengan path kamu
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 
 export default function PaginationComponent({ total, limit, amountPages, baseUrl = "/" }: { total?: number, limit?: number, amountPages?: number; baseUrl?: string }) {
-    const router = useRouter();
     const searchParams = useSearchParams();
 
     const currentPage = parseInt(searchParams.get('page') || '1');

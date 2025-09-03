@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
-import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -29,18 +28,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
 import { Input } from '@/components/ui/input'
 
-import { Search, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 import { CreateCategoryTypes, createCategorySchema } from '@/types/form';
 import type { Category } from '@/types/data'
@@ -62,7 +52,6 @@ const Page = () => {
         handleSubmit,
         formState: { isSubmitting, errors },
         setError,
-        setValue,
     } = useForm<CreateCategoryTypes>({
         resolver: zodResolver(createCategorySchema)
     })
@@ -73,7 +62,7 @@ const Page = () => {
     const currentPage = parseInt(searchParams.get('page') || '1');
     const currentTitleFilter = searchParams.get('search') || '';
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     useEffect(() => {
         const fetchCategories = async () => {

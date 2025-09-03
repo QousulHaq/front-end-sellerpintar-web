@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 
 const Page = () => {
     const router = useRouter();
-    const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const {
         register,
         handleSubmit,

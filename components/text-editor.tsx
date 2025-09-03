@@ -5,7 +5,7 @@ import { createEditor, Editor, Transforms, Element, Node } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import type { RenderElementProps, RenderLeafProps } from 'slate-react'
-import { slateToHtml, slateToHtmlConfig, type SlateToHtmlConfig, htmlToSlate } from '@slate-serializers/html';
+import { slateToHtml, htmlToSlate } from '@slate-serializers/html';
 import { Element as DomHandlerElement } from 'domhandler';
 import { Config } from '@/types/slate'
 import { styleToString } from '@/lib/slate'
@@ -193,7 +193,6 @@ const TextEditor = ({ onEditorChange, htmlString }: { onEditorChange: (textValue
     const [charCount, setCharCount] = useState(0)
     const [editor] = useState(() => withHistory(withImages(withReact(createEditor()))))
 
-    const [textObject, setTextObject] = useState(initialValue);
     const [textValue, setTextValue] = useState<string>("");
     const [textDebounced] = useDebounce(textValue, 1000);
 
@@ -473,7 +472,7 @@ const CodeElement = (props: RenderElementProps) => {
 }
 
 const AlignElement = (props: RenderElementProps) => {
-    let style: React.CSSProperties = {}
+    const style: React.CSSProperties = {}
 
     return (
         <p {...props.attributes} style={{ ...style, textAlign: props.element.type }}>
@@ -488,7 +487,7 @@ const DefaultElement = (props: RenderElementProps) => {
 
 const ImageElement = ({ attributes, children, element }: RenderElementProps) => {
     const el = element as CustomElementType
-    let style: React.CSSProperties = {}
+    const style: React.CSSProperties = {}
 
     if (el.type === 'center') {
         style.display = 'block'
@@ -514,7 +513,7 @@ const ImageElement = ({ attributes, children, element }: RenderElementProps) => 
 }
 
 const Leaf = (props: RenderLeafProps) => {
-    let style: React.CSSProperties = {}
+    const style: React.CSSProperties = {}
 
     if (props.leaf.bold) {
         style.fontWeight = 'bold'

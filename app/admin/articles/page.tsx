@@ -53,7 +53,7 @@ const Page = () => {
     const currentTitleFilter = searchParams.get('title') || '';
     const currentCategory = searchParams.get('category') || 'none';
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -215,7 +215,7 @@ const Page = () => {
                                                         <DialogHeader>
                                                             <DialogTitle>Delete Articles</DialogTitle>
                                                             <DialogDescription>
-                                                                Deleting "{row.title}" is permanent and cannot be undone. All related content will be removed.
+                                                                Deleting &quot;{row.title}&quot; is permanent and cannot be undone. All related content will be removed.
                                                             </DialogDescription>
                                                         </DialogHeader>
                                                         <DialogFooter>
