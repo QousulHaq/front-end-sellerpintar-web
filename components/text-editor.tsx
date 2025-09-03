@@ -39,44 +39,53 @@ export const config: Config = {
     markMap: MARK_ELEMENT_TAG_MAP,
     elementMap: ELEMENT_NAME_TAG_MAP,
 
-    elementAttributeTransform: ({ node }) => {
+    elementAttributeTransform: ({ node }): Record<string, string> | undefined => {
         if (node.align) {
             return {
                 style: styleToString({
-                    ['text-align']: node.align,
+                    textAlign: node.align,
                 }),
                 class: 'text-slate-700 text-base font-normal max-w-[1120px] mb-4',
             }
         }
+
+        // jangan return `style?: undefined` → cukup return object tanpa style
         return {
             class: 'text-slate-700 text-base font-normal max-w-[1120px] mb-4',
         }
     },
 
     elementTransforms: {
-        'bulleted-list': ({ children = [] }) => {
-            return new DomHandlerElement('ul', { class: 'list-disc mb-4' }, children)
-        },
-        'numbered-list': ({ children = [] }) => {
-            return new DomHandlerElement('ol', { class: 'list-decimal mb-4' }, children)
-        },
-        'list-item': ({ children = [] }) => {
-            return new DomHandlerElement('li', { class: 'ml-4' }, children)
-        },
+        'bulleted-list': ({ children = [] }) =>
+            new DomHandlerElement('ul', { class: 'list-disc mb-4' }, children),
+
+        'numbered-list': ({ children = [] }) =>
+            new DomHandlerElement('ol', { class: 'list-decimal mb-4' }, children),
+
+        'list-item': ({ children = [] }) =>
+            new DomHandlerElement('li', { class: 'ml-4' }, children),
     },
 
     markTransforms: {
         bold: ({ children = [] }) =>
-            new DomHandlerElement('span', { class: 'text-slate-900 text-base font-semibold mb-0' }, children),
+            new DomHandlerElement(
+                'span',
+                { class: 'text-slate-900 text-base font-semibold mb-0' },
+                children,
+            ),
 
         italic: ({ children = [] }) =>
-            new DomHandlerElement('em', { class: 'italic text-slate-700 text-base font-normal' }, children),
+            new DomHandlerElement(
+                'em',
+                { class: 'italic text-slate-700 text-base font-normal' },
+                children,
+            ),
 
         code: ({ children = [] }) =>
             new DomHandlerElement(
                 'code',
                 { class: 'bg-gray-100 px-1 py-0.5 rounded text-sm font-mono' },
-                children
+                children,
             ),
     },
 
