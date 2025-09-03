@@ -6,7 +6,7 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import type { RenderElementProps, RenderLeafProps } from 'slate-react'
 import { slateToHtml, htmlToSlate } from '@slate-serializers/html';
-import { Element as DomHandlerElement } from 'domhandler';
+import { Element as DomHandlerElement, ChildNode } from 'domhandler';
 import { Config } from '@/types/slate'
 import { styleToString } from '@/lib/slate'
 import { useDebounce } from 'use-debounce'
@@ -17,7 +17,7 @@ import { Separator } from './ui/separator'
 import { Image as ImageIcon, Redo2, Undo2, Bold, Italic, AlignCenter, AlignJustify, AlignLeft, AlignRight, List, ListOrdered } from "lucide-react"
 
 import type { CustomElementType, CustomEditorType } from '@/types'
-
+type WithChildren = { children?: ChildNode[] }
 
 // Map Slate element names to HTML tag names
 const ELEMENT_NAME_TAG_MAP = {
@@ -67,25 +67,25 @@ export const config: Config = {
     },
 
     markTransforms: {
-        bold: ({ children = [] }) =>
+        bold: ({ node }) =>
             new DomHandlerElement(
                 'span',
                 { class: 'text-slate-900 text-base font-semibold mb-0' },
-                children,
+                (node as DomHandlerElement).children as ChildNode[],
             ),
 
-        italic: ({ children = [] }) =>
+        italic: ({ node }) =>
             new DomHandlerElement(
                 'em',
                 { class: 'italic text-slate-700 text-base font-normal' },
-                children,
+                (node as DomHandlerElement).children as ChildNode[],
             ),
 
-        code: ({ children = [] }) =>
+        code: ({ node }) =>
             new DomHandlerElement(
                 'code',
                 { class: 'bg-gray-100 px-1 py-0.5 rounded text-sm font-mono' },
-                children,
+                (node as DomHandlerElement).children as ChildNode[],
             ),
     },
 
