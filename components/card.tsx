@@ -18,7 +18,7 @@ const Card = ({
 }: Articles) => {
     return (
         <div className="card-container space-y-4">
-            <Image src={imageUrl ? imageUrl : "https://placehold.co/387x240/png"} width={386.67} height={240} className='rounded-[12px]' alt='card-image' />
+            <Image src={imageUrl ? imageUrl : "https://placehold.co/387x240/png"} width={386.67} height={240} className='rounded-[12px] max-h-[240px] max-w-[386.67] object-cover' alt='card-image' />
             <div className="card-content space-y-2 max-w-[386.67px]">
                 <p className='text-slate-600 text-sm font-normal leading-5'>{dateFormatter(createdAt)}</p>
                 <h1 className='text-slate-900 text-lg font-semibold leading-7'>{title}</h1>

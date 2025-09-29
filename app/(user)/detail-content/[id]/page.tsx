@@ -32,7 +32,7 @@ const Page = async ({
                     </div>
                     <h1 className='text-slate-900 text-3xl font-semibold leading-9 max-w-[642px] text-center'>{detailArticles?.title}</h1>
                 </div>
-                <Image src={detailArticles?.imageUrl || "https://placehold.co/1120x480/png"} width={1120} height={480} alt='detail-content-image' className='rounded-[12px]' />
+                <Image src={detailArticles?.imageUrl || "https://placehold.co/1120x480/png"} width={1120} height={480} alt='detail-content-image' className='rounded-[12px] max-h-[480px] object-cover object-center' />
                 <div className="article-content">
                     <div className='max-w-[1120px]' dangerouslySetInnerHTML={{ __html: `${detailArticles?.content}` }} />
                 </div>
