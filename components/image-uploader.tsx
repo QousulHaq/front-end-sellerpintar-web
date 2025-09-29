@@ -45,7 +45,14 @@ const ImageUploader = ({ imageUrl, onImageChange, onErrorUpload }: { imageUrl: s
   return (
     <div className="input-img space-y-1 w-[223px]">
       <Label className='text-slate-900 text-sm font-medium leading-5' htmlFor='picture'>Thumbnails</Label>
-      <Input id='picture' type='file' className='hidden' ref={imageInputRef} onChange={pictureInputHandler}></Input>
+      <Input
+        id="picture"
+        type="file"
+        accept="image/*"
+        className="hidden"
+        ref={imageInputRef}
+        onChange={pictureInputHandler}
+      />
       <div className="photo-input p-3 flex flex-col justify-center items-center gap-2 cursor-pointer h-[163px] border border-dashed border-slate-300 rounded-[8px] relative overflow-hidden" onClick={() => { imageInputRef.current?.click() }}>
         {
           imageUrl !== "" ? (
